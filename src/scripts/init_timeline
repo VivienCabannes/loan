@@ -1,0 +1,25 @@
+#!/usr/bin/env python
+import logging
+
+import asyncio
+
+from loan import DB, populate_timeline
+
+logging.basicConfig(
+    format="{asctime} {levelname} [{name}:{lineno}] {message}",
+    style='{',
+    datefmt='%H:%M:%S',
+    level='DEBUG',
+    handlers=[
+        logging.StreamHandler(),
+    ],
+)
+
+
+async def main():
+    database = DB()
+    await database.start()
+    await database.reset_table('timeline')
+    await populate_timeline(database)
+
+asyncio.run(main())
